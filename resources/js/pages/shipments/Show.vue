@@ -19,6 +19,7 @@ const formatNumber = (value) => new Intl.NumberFormat().format(value);
 <template>
     <div class="mx-auto max-w-5xl space-y-6">
         <div v-if="page.props.flash?.success" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{{ page.props.flash.success }}</div>
+        <div v-if="shipment.delivery_reference.startsWith('DEMO')" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">Demonstration Data: this shipment is for local development and does not represent an operational record.</div>
 
         <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
             <div class="flex items-start gap-4">

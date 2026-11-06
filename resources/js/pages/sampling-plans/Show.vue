@@ -41,6 +41,8 @@ const formatNumber = (value) => value === null || value === undefined
             </div>
         </div>
 
+        <div v-if="shipment.delivery_reference.startsWith('DEMO')" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">Demonstration Data: the displayed targets are saved local development values, not automatically calculated results.</div>
+
         <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <h3 class="text-base font-semibold text-slate-950">Shipment Information</h3>
             <dl class="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">

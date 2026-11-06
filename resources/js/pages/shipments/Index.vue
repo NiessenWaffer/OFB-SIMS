@@ -65,7 +65,12 @@ const formatNumber = (value) => new Intl.NumberFormat().format(value);
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         <tr v-for="shipment in shipments.data" :key="shipment.id" class="text-sm text-slate-700 transition hover:bg-slate-50">
-                            <td class="whitespace-nowrap px-6 py-4 font-semibold text-slate-900">{{ shipment.delivery_reference }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 font-semibold text-slate-900">
+                                <div class="flex items-center gap-2">
+                                    <span>{{ shipment.delivery_reference }}</span>
+                                    <span v-if="shipment.delivery_reference.startsWith('DEMO')" class="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">Demonstration Data</span>
+                                </div>
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4">{{ shipment.denomination }}</td>
                             <td class="px-6 py-4">{{ shipment.supplier_name }}</td>
                             <td class="whitespace-nowrap px-6 py-4">{{ formatNumber(shipment.total_boxes) }}</td>

@@ -37,6 +37,8 @@ const formatNumber = (value) => value === null || value === undefined
             </div>
         </div>
 
+        <div v-if="shipment.delivery_reference.startsWith('DEMO')" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">Demonstration Data: these sampling plans are for local development and do not represent approved operational rules.</div>
+
         <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
