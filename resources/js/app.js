@@ -1,4 +1,15 @@
-import { createApp } from 'vue';
-import AppLayout from './layouts/AppLayout.vue';
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/vue3';
 
-createApp(AppLayout).mount('#app');
+createInertiaApp({
+    resolve: (name) => {
+        const pages = import.meta.glob('./pages/**/*.vue', { eager: true });
+
+        return pages[`./pages/${name}.vue`];
+    },
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mount(el);
+    },
+});

@@ -1,14 +1,26 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const isSidebarOpen = ref(false);
+const page = usePage();
 
 const navigation = [
-    { label: 'Dashboard', icon: 'dashboard' },
-    { label: 'Shipments', icon: 'shipments' },
-    { label: 'Sampling Plans', icon: 'sampling' },
-    { label: 'Inspections', icon: 'inspections' },
+    { label: 'Dashboard', href: '/', icon: 'dashboard' },
+    { label: 'Shipments', href: '/shipments', icon: 'shipments' },
+    { label: 'Sampling Plans', href: '#', icon: 'sampling' },
+    { label: 'Inspections', href: '#', icon: 'inspections' },
 ];
+
+const pageTitle = computed(() => {
+    if (page.url.startsWith('/shipments')) {
+        return 'Shipments';
+    }
+
+    return 'Dashboard';
+});
+
+const isActive = (href) => href !== '#' && (href === '/' ? page.url === '/' : page.url.startsWith(href));
 </script>
 
 <template>
@@ -36,12 +48,12 @@ const navigation = [
 
             <nav class="flex-1 space-y-1 px-4 py-6" aria-label="Main navigation">
                 <p class="mb-3 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Workspace</p>
-                <a
-                    v-for="(item, index) in navigation"
+                <Link
+                    v-for="item in navigation"
                     :key="item.label"
-                    href="#"
+                    :href="item.href"
                     class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors"
-                    :class="index === 0 ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'"
+                    :class="isActive(item.href) ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'"
                     @click="isSidebarOpen = false"
                 >
                     <svg v-if="item.icon === 'dashboard'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4Zm10-10a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V5Zm0 10a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-4Z" /></svg>
@@ -49,7 +61,7 @@ const navigation = [
                     <svg v-else-if="item.icon === 'sampling'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3h6M10 3v5.2L5.8 15a4 4 0 0 0 3.4 6h5.6a4 4 0 0 0 3.4-6L14 8.2V3M8 14h8" /></svg>
                     <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4m5-1.5A9 9 0 1 1 4 5.5M20 4l-7 7" /></svg>
                     <span>{{ item.label }}</span>
-                </a>
+                </Link>
             </nav>
 
             <div class="border-t border-slate-200 p-4">
@@ -71,7 +83,7 @@ const navigation = [
                     </button>
                     <div>
                         <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Workspace</p>
-                        <h1 class="text-lg font-semibold text-slate-950">Dashboard</h1>
+                        <h1 class="text-lg font-semibold text-slate-950">{{ pageTitle }}</h1>
                     </div>
                 </div>
                 <button class="rounded-full p-2 text-slate-500 hover:bg-slate-100" aria-label="Notifications">
@@ -80,13 +92,7 @@ const navigation = [
             </header>
 
             <main class="p-4 sm:p-8">
-                <div class="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center sm:p-16">
-                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16M8 16v-5m4 5V8m4 8v-9" /></svg>
-                    </div>
-                    <h2 class="mt-4 text-xl font-semibold text-slate-900">Welcome to OFB-SIMS</h2>
-                    <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">Your application workspace is ready. Dashboard content and workflows will be added here.</p>
-                </div>
+                <slot />
             </main>
         </div>
     </div>
